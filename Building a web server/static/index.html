@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go Server | Minimal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        mono: ['JetBrains Mono', 'Fira Code', 'ui-monospace', 'monospace'],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+    </style>
+</head>
+<body class="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300">
+
+    <!-- Header -->
+    <nav class="max-w-3xl mx-auto px-6 py-8 flex justify-between items-center">
+        <div class="flex items-center gap-2 font-bold text-xl">
+            <i data-lucide="terminal" class="text-blue-500"></i>
+            <span>GoServer</span>
+        </div>
+        
+        <div class="flex items-center gap-4">
+            <!-- Status Indicator -->
+            <div class="flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/50">
+                <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <span class="text-xs font-medium text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">Online</span>
+            </div>
+
+            <!-- Theme Toggle -->
+            <button onclick="toggleTheme()" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-900 hover:ring-2 ring-blue-500 transition-all">
+                <i data-lucide="sun" id="sun-icon" class="hidden dark:block w-5 h-5 text-amber-400"></i>
+                <i data-lucide="moon" id="moon-icon" class="block dark:hidden w-5 h-5 text-slate-600"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-3xl mx-auto px-6 py-8">
+        <header class="mb-10">
+            <h1 class="text-4xl font-extrabold mb-4 tracking-tight">Backend powered by <span class="text-blue-500">Go</span>.</h1>
+            <p class="text-slate-500 dark:text-slate-400 text-lg">
+                Statically compiled, concurrent, and efficient.
+            </p>
+        </header>
+
+        <!-- Command Section -->
+        <div class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 mb-10 flex justify-between items-center group">
+            <code class="mono text-blue-600 dark:text-blue-400">go run main.go --port=8080</code>
+            <button onclick="copyCommand()" class="text-slate-400 hover:text-blue-500 transition-colors">
+                <i data-lucide="copy" class="w-5 h-5"></i>
+            </button>
+        </div>
+
+        <!-- Features List -->
+        <div class="mb-12">
+            <h2 class="text-sm font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-4">Core Features</h2>
+            <ul class="space-y-3">
+                <li class="flex items-center gap-3 text-slate-600 dark:text-slate-300">
+                    <i data-lucide="check-circle-2" class="w-4 h-4 text-blue-500"></i>
+                    Built-in JSON middleware
+                </li>
+                <li class="flex items-center gap-3 text-slate-600 dark:text-slate-300">
+                    <i data-lucide="check-circle-2" class="w-4 h-4 text-blue-500"></i>
+                    Zero-dependency architecture
+                </li>
+                <li class="flex items-center gap-3 text-slate-600 dark:text-slate-300">
+                    <i data-lucide="check-circle-2" class="w-4 h-4 text-blue-500"></i>
+                    Prometheus metrics support
+                </li>
+            </ul>
+        </div>
+
+        <!-- API Endpoints -->
+        <div class="mb-12">
+            <h2 class="text-sm font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-4">API Endpoints</h2>
+            <div class="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden">
+                <div class="p-3 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
+                    <span class="mono text-sm font-bold text-emerald-600 dark:text-emerald-400">GET</span>
+                    <span class="mono text-sm">/api/v1/health</span>
+                </div>
+                <div class="p-3 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
+                    <span class="mono text-sm font-bold text-blue-600 dark:text-blue-400">POST</span>
+                    <span class="mono text-sm">/api/v1/data</span>
+                </div>
+                <div class="p-3 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
+                    <span class="mono text-sm font-bold text-amber-600 dark:text-amber-400">WS</span>
+                    <span class="mono text-sm">/api/v1/stream</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Links -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <a href="#" class="p-4 border border-slate-200 dark:border-slate-800 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-900 transition-all hover:-translate-y-1 flex items-center gap-3">
+                <i data-lucide="book-open" class="w-5 h-5 text-blue-500"></i>
+                <div class="flex flex-col">
+                    <span class="font-bold">Docs</span>
+                    <span class="text-xs text-slate-500">API Documentation</span>
+                </div>
+            </a>
+            <a href="#" class="p-4 border border-slate-200 dark:border-slate-800 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-900 transition-all hover:-translate-y-1 flex items-center gap-3">
+                <i data-lucide="github" class="w-5 h-5 text-blue-500"></i>
+                <div class="flex flex-col">
+                    <span class="font-bold">Repo</span>
+                    <span class="text-xs text-slate-500">View source on GitHub</span>
+                </div>
+            </a>
+        </div>
+    </main>
+
+    <footer class="max-w-3xl mx-auto px-6 py-12 text-sm text-slate-400 border-t border-slate-100 dark:border-slate-900 mt-12 flex flex-col sm:flex-row justify-between gap-4">
+        <p>Built with Go 1.22 & Tailwind.</p>
+        <div class="flex gap-4">
+            <a href="#" class="hover:underline">Privacy</a>
+            <a href="#" class="hover:underline">Logs</a>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Theme Toggling Logic
+        function toggleTheme() {
+            const html = document.documentElement;
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Copy Helper
+        function copyCommand() {
+            const cmd = "go run main.go --port=8080";
+            const el = document.createElement('textarea');
+            el.value = cmd;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            
+            const toast = document.createElement('div');
+            toast.className = "fixed bottom-8 left-1/2 -translate-x-1/2 bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg z-50 animate-bounce";
+            toast.innerText = "Copied to clipboard!";
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2000);
+        }
+
+        // Check for saved user preference
+        if (localStorage.getItem('theme') === 'light') {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+</body>
+</html>

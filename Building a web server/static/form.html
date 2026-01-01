@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go Server | Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        mono: ['JetBrains Mono', 'Fira Code', 'ui-monospace', 'monospace'],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        input:focus, textarea:focus { outline: none; }
+    </style>
+</head>
+<body class="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300 min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <nav class="max-w-3xl w-full mx-auto px-6 py-8 flex justify-between items-center">
+        <a href="index.html" class="flex items-center gap-2 font-bold text-xl hover:opacity-80 transition-opacity">
+            <i data-lucide="terminal" class="text-blue-500"></i>
+            <span>GoServer</span>
+        </a>
+        
+        <div class="flex items-center gap-4">
+            <button onclick="toggleTheme()" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-900 hover:ring-2 ring-blue-500 transition-all">
+                <i data-lucide="sun" id="sun-icon" class="hidden dark:block w-5 h-5 text-amber-400"></i>
+                <i data-lucide="moon" id="moon-icon" class="block dark:hidden w-5 h-5 text-slate-600"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Form Content -->
+    <main class="max-w-xl w-full mx-auto px-6 py-8 flex-grow">
+        <header class="mb-10">
+            <h1 class="text-3xl font-extrabold mb-2 tracking-tight">Submit Data</h1>
+            <p class="text-slate-500 dark:text-slate-400">Send a payload to the Go backend for processing.</p>
+        </header>
+
+        <form class="space-y-6" method="POST" action="/form">
+            <!-- Name Input -->
+            <div class="space-y-2">
+                <label for="name" class="text-sm font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Name</label>
+                <input type="text" id="name" name="name" required placeholder="John Doe"
+                    class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 transition-all">
+            </div>
+
+            <!-- Email Input -->
+            <div class="space-y-2">
+                <label for="email" class="text-sm font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Email Address</label>
+                <input type="email" id="email" name="email" required placeholder="john@example.com"
+                    class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 transition-all">
+            </div>
+
+            <!-- Message/Payload Input -->
+            <div class="space-y-2">
+                <label for="payload" class="text-sm font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Payload (JSON)</label>
+                <textarea id="payload" name="payload" rows="4" placeholder='{"status": "active"}'
+                    class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 transition-all mono text-sm"></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20">
+                <i data-lucide="send" class="w-5 h-5"></i>
+                Submit to Server
+            </button>
+        </form>
+
+        <div class="mt-8">
+            <a href="index.html" class="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-blue-500 transition-colors">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                Back to Dashboard
+            </a>
+        </div>
+    </main>
+
+    <footer class="max-w-3xl w-full mx-auto px-6 py-12 text-sm text-slate-400 border-t border-slate-100 dark:border-slate-900 mt-12 flex flex-col sm:flex-row justify-between gap-4">
+        <p>Built with Go 1.22 & Tailwind.</p>
+        <div class="flex gap-4">
+            <a href="/static/index.html" class="hover:underline">Documentation</a>
+            <a href="/static/index.html" class="hover:underline">API Reference</a>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // The form performs a normal POST to /form; visual JS submission was removed
+
+        if (localStorage.getItem('theme') === 'light') {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+</body>
+</html>
