@@ -47,4 +47,3 @@ Notes
 - Submitted entries are appended to `submissions.txt` in the project root.
 - Images used by the project are in the `Photos/` folder.
 
-If you want, I can start the server here and run a quick test POST to verify `submissions.txt` is updated.
